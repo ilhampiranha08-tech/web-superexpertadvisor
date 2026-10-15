@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HFT Gold Averaging Up MT4 / MT5 | High-Frequency Quantitative Engine — Ilham Sugiri</title>
+    <meta name="description" content="Official architecture, strategy breakdown, and verified 3.5-year backtest report for HFT Gold Averaging Up MT4/MT5 by Ilham Sugiri. Next-gen quantitative trading robot for Gold (XAUUSD) and Forex currencies featuring momentum averaging up, basket liquidation, and sub-1% deposit load.">
+    <meta name="author" content="Ilham Sugiri">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="HFT Gold Averaging Up MT4 / MT5 — High-Frequency Quantitative Trading Robot">
+    <meta property="og:description" content="Next-gen quantitative trading robot for Gold (XAUUSD) and Forex currencies featuring momentum averaging up, dynamic basket closing, and sub-1% deposit load.">
+    <meta property="og:image" content="../assets/backtest_hft_gold_averaging_up.png">
+    <meta property="og:url" content="https://superexpertadvisors.web.id/hft-gold-averaging-up/">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/i18n.css">
+
+    <style>
+        :root {
+            --bg-primary: #06080e;
+            --bg-secondary: #0a1120;
+            --bg-card: rgba(10, 17, 32, 0.85);
+            --border-color: rgba(6, 182, 212, 0.22);
+            --border-glow: rgba(6, 182, 212, 0.55);
+            
+            --accent-gold: #fbbf24;
+            --accent-amber: #f59e0b;
+            --accent-gold-dark: #d97706;
+            --accent-emerald: #10b981;
+            --accent-cyan: #06b6d4;
+            --accent-cyan-light: #38bdf8;
+            --accent-rose: #f43f5e;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.65;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 65%, rgba(245, 158, 11, 0.1) 0%, transparent 45%),
+                linear-gradient(to bottom, #06080e 0%, #080f1d 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* TOP NAVIGATION */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 8, 14, 0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.18);
+            padding: 0.9rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav-back:hover {
+            color: #fff;
+            background: rgba(6, 182, 212, 0.15);
+            border-color: var(--accent-cyan);
+            transform: translateX(-2px);
+        }
+
+        .nav-back-short {
+            display: none;
+        }
+
+        .nav-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .nav-title .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 3.5rem 0 2rem;
+            text-align: center;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .hero-title {
+            font-size: clamp(2.3rem, 5.2vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.6rem;
+            background: linear-gradient(135deg, #ffffff 25%, #38bdf8 70%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 820px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        /* QUICK STATS */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item .val {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-item .lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* SECTION STYLES */
+        .section {
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-header {
+            margin-bottom: 2.25rem;
+        }
+
+        .section-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            letter-spacing: 0.08em;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        /* STRATEGY PILLARS GRID */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.35rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+
+        .pillar-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .pillar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.6rem;
+        }
+
+        .pillar-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* RECOMMENDATIONS SPECS CARD */
+        .specs-card {
+            background: linear-gradient(135deg, rgba(10, 17, 32, 0.95) 0%, rgba(14, 23, 44, 0.85) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 2.25rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2rem;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.75rem;
+        }
+
+        .specs-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .specs-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .specs-table td {
+            padding: 1rem 0.5rem;
+            vertical-align: middle;
+        }
+
+        .specs-label {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            width: 35%;
+            font-size: 0.95rem;
+        }
+
+        .specs-value {
+            color: #f1f5f9;
+            font-size: 0.98rem;
+        }
+
+        .specs-value strong {
+            color: #ffffff;
+        }
+
+        .important-alert {
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 10px;
+            padding: 1.1rem 1.4rem;
+            color: #e0f2fe;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        /* BACKTEST SECTION */
+        .backtest-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .backtest-img-wrapper {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            margin-bottom: 1.75rem;
+        }
+
+        .backtest-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .backtest-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .bt-metric {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .bt-metric .m-val {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.2rem;
+        }
+
+        .bt-metric .lbl {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        /* ORDER & INQUIRY CARD */
+        .order-card {
+            background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.18) 0%, rgba(10, 17, 32, 0.95) 75%);
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            border-radius: 20px;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            margin: 4rem 0 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(6, 182, 212, 0.15);
+        }
+
+        .order-card h2 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+
+        .order-price-badge {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin: 0.5rem 0 1.25rem;
+            text-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
+        }
+
+        .order-card p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .order-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .btn-order-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 60%, #0284c7 100%);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 1.05rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .btn-order-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(6, 182, 212, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .btn-order-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 1rem 1.75rem;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.25s ease;
+        }
+
+        .btn-order-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .disclaimer-card {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.25rem;
+            max-width: 780px;
+            margin: 0 auto;
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .disclaimer-title {
+            color: var(--accent-rose);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .disclaimer-text {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.5rem 0;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.88rem;
+        }
+
+        footer p {
+            margin-bottom: 0.4rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .nav-title {
+                display: none !important;
+            }
+            .hero-title {
+                font-size: 2.3rem;
+            }
+            .specs-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-back-full {
+                display: none !important;
+            }
+            .nav-back-short {
+                display: inline !important;
+            }
+            .specs-table td {
+                display: block;
+                width: 100%;
+                padding: 0.5rem 0;
+            }
+            .specs-table tr {
+                padding: 0.75rem 0;
+                display: block;
+            }
+        }
+
+        @media (max-width: 580px) {
+            header {
+                padding: 0.65rem 0;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+            .nav-back {
+                padding: 0.4rem 0.7rem;
+                font-size: 0.84rem;
+            }
+            .lang-btn {
+                padding: 0.4rem 0.65rem;
+                font-size: 0.82rem;
+            }
+            .hero {
+                padding: 2.2rem 0 1.5rem;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .order-card {
+                padding: 2.25rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION -->
+    <header>
+        <div class="container">
+            <div class="nav-content">
+                <a href="../" class="nav-back">
+                    <span class="nav-back-full" data-i18n="sb_btn_back_ea">◀ Back to All Expert Advisors</span>
+                    <span class="nav-back-short" data-i18n="nav_back_short">◀ Back</span>
+                </a>
+
+                <div class="nav-title">
+                    <span class="dot"></span>
+                    HFT GOLD AVERAGING UP MT4 / MT5
+                </div>
+
+                <div class="nav-actions">
+                    <!-- Language switcher automatically mounted here -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <span class="badge-pill" data-i18n="hft_page_tag">⚡ HIGH-FREQUENCY TRADING ENGINE • MT4 & MT5</span>
+            <h1 class="hero-title" data-i18n="hft_title">HFT Gold Averaging Up MT4 / MT5</h1>
+            <div class="hero-tagline" data-i18n="hft_tagline">The Next-Gen Quantitative Averaging-Up Paradigm</div>
+            <p class="hero-desc" data-i18n="hft_hero_desc">
+                HFT Gold Averaging Up MT4/MT5 is an ultra-fast quantitative trading engine designed for Gold (XAUUSD) and high-liquidity currency pairs. Unlike dangerous martingale systems that average down into losses, this robot implements true algorithmic Averaging Up — scaling into winning positions as trend momentum accelerates, securing net profit with dynamic basket closing, and cycling into opposite positions to capture market turns.
+            </p>
+
+            <!-- STATS BAR -->
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <div class="val">$50 USD</div>
+                    <div class="lbl">One-Time License</div>
+                </div>
+                <div class="stat-item">
+                    <div class="val">M5 & M1</div>
+                    <div class="lbl">Dual-Timeframe Engine</div>
+                </div>
+                <div class="stat-item">
+                    <div class="val">XAUUSD & Forex</div>
+                    <div class="lbl">Gold + Major Pairs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="val">3.5 Years Tested</div>
+                    <div class="lbl">Verified &gt; $14,000 USD Growth</div>
+                </div>
+                <div class="stat-item">
+                    <div class="val">&lt; 1.0% Load</div>
+                    <div class="lbl">Max Deposit Load</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STRATEGY ARCHITECTURE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-tag">01 // QUANTITATIVE FOUNDATION</span>
+                <h2 class="section-title" data-i18n="hft_sec_strat_title">Algorithmic Strategy Architecture</h2>
+            </div>
+
+            <div class="pillars-grid">
+                <!-- Pillar 1: Algorithmic Averaging Up -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">📈</div>
+                    <h3 class="pillar-title" data-i18n="hft_strat_avgup_title">Algorithmic Averaging Up (Momentum Pyramiding)</h3>
+                    <p class="pillar-desc" data-i18n="hft_strat_avgup_desc">
+                        Compounds winning momentum by adding positions only in profit as the trend expands. Never compounds or averages down into drawdown, eliminating catastrophic liquidation risk.
+                    </p>
+                </div>
+
+                <!-- Pillar 2: Dynamic Basket Close & Opposite Hedging/Switching -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">🔄</div>
+                    <h3 class="pillar-title" data-i18n="hft_strat_basket_title">Dynamic Basket Close & Opposite Hedging/Switching</h3>
+                    <p class="pillar-desc" data-i18n="hft_strat_basket_desc">
+                        Calculates real-time aggregate portfolio profit, executing immediate simultaneous basket liquidations at targeted gain thresholds and opening responsive opposite positions upon trend reversal.
+                    </p>
+                </div>
+
+                <!-- Pillar 3: Dual-Timeframe Engine -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">⚡</div>
+                    <h3 class="pillar-title" data-i18n="hft_strat_dualtf_title">Dual-Timeframe Engine (M5 Swing / M1 Ultra HFT)</h3>
+                    <p class="pillar-desc" data-i18n="hft_strat_dualtf_desc">
+                        Dual-layer execution architecture: M5 for stable macro trend identification and M1 for high-frequency micro-pip scalping and rapid order cycling.
+                    </p>
+                </div>
+
+                <!-- Pillar 4: Strict Risk Ceiling -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">🛡️</div>
+                    <h3 class="pillar-title" data-i18n="hft_strat_risk_title">Strict Risk Ceiling (&lt; 1.0% Deposit Load)</h3>
+                    <p class="pillar-desc" data-i18n="hft_strat_risk_desc">
+                        Engineered with institutional margin management keeping typical deposit load strictly below 1.0%, guaranteeing exceptional margin resilience and capital longevity.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPERATIONAL RECOMMENDATIONS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-tag">02 // BEST PRACTICES</span>
+                <h2 class="section-title" data-i18n="hft_sec_recom_title">Operational Specifications & Recommendations</h2>
+            </div>
+
+            <div class="specs-card">
+                <table class="specs-table">
+                    <tr>
+                        <td class="specs-label" data-i18n="hft_rec_pairs_lbl">Currency Pairs & Assets</td>
+                        <td class="specs-value" data-i18n="hft_rec_pairs_val">XAUUSD / GOLD (Primary), GBPUSD & USDJPY (Verified Bonus Sets), other major pairs supported</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="hft_rec_tf_lbl">Timeframe</td>
+                        <td class="specs-value" data-i18n="hft_rec_tf_val">M5 (Standard Trend) & M1 (HFT Ultra-Fast Mode)</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="hft_rec_dep_fx_lbl">Min Deposit (Currencies)</td>
+                        <td class="specs-value" data-i18n="hft_rec_dep_fx_val">$500 ($1,000 recommended)</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="hft_rec_dep_gold_lbl">Min Deposit (Gold / XAUUSD)</td>
+                        <td class="specs-value" data-i18n="hft_rec_dep_gold_val">$1,000 ($2,000 recommended)</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="hft_rec_acc_lbl">Account Type</td>
+                        <td class="specs-value" data-i18n="hft_rec_acc_val">Standard, Raw, or Zero Spread (LOW SPREAD recommended)</td>
+                    </tr>
+                </table>
+
+                <div class="important-alert" data-i18n="hft_rec_imp_note">
+                    ⚡ IMPORTANT: LOW SPREAD or RAW accounts are highly recommended for optimal ultra-fast execution!
+                </div>
+            </div>
+        </section>
+
+        <!-- VERIFIED HISTORICAL BACKTEST -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-tag">03 // PROVEN EVIDENCE</span>
+                <h2 class="section-title" data-i18n="hft_sec_bt_title">Verified 3.5-Year Backtest Performance (Feb 2020 – Sept 2023)</h2>
+                <p class="section-desc" style="color: var(--text-muted);" data-i18n="hft_bt_desc">
+                    Verified 3.5-year stress-test on MetaTrader showing sustained exponential equity growth from initial deposit to &gt; $14,000 USD, while keeping maximum deposit load strictly below 1.0% throughout the entire testing period.
+                </p>
+            </div>
+
+            <div class="backtest-box">
+                <div class="backtest-img-wrapper">
+                    <img src="../assets/backtest_hft_gold_averaging_up.png" alt="HFT Gold Averaging Up 3.5-Year Backtest Chart Balance Equity and Deposit Load" class="backtest-img">
+                </div>
+
+                <div class="backtest-metrics-grid">
+                    <div class="bt-metric">
+                        <div class="m-val">XAUUSD (Gold)</div>
+                        <div class="lbl">Primary Asset</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">M5 & M1</div>
+                        <div class="lbl">Dual Timeframes</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">3.5 Years</div>
+                        <div class="lbl">Period (Feb 2020 – Sep 2023)</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">&gt; $14,000 USD</div>
+                        <div class="lbl">Sustained Growth</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">&lt; 1.0%</div>
+                        <div class="lbl">Max Deposit Load</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORDER & INQUIRY CARD -->
+        <section class="order-card" id="order">
+            <span class="badge-pill">🛒 LICENSE ACQUISITION</span>
+            <h2>Get HFT Gold Averaging Up (MT4 / MT5)</h2>
+            <div class="order-price-badge">$50 USD</div>
+            <p>
+                Includes ready-to-run compiled binaries (.ex4 and .ex5), verified preset files for Gold (XAUUSD), GBPUSD, and USDJPY, comprehensive parameter documentation, and direct developer setup consultation.
+            </p>
+
+            <div class="order-buttons">
+                <a href="mailto:ilham.piranha08@gmail.com?subject=Order%20HFT%20Gold%20Averaging%20Up%20EA%20($50)" class="btn-order-primary">
+                    <span data-i18n="hft_btn_order_email">✉️ Order HFT Gold Averaging Up ($50 USD) via Email</span>
+                </a>
+                <a href="../" class="btn-order-secondary">
+                    <span data-i18n="sb_btn_back_ea">◀ Back to All Expert Advisors</span>
+                </a>
+            </div>
+
+            <div class="disclaimer-card">
+                <div class="disclaimer-title" data-i18n="ea_disclaimer_title">
+                    ⚠️ Risk Warning & Algorithmic Notice
+                </div>
+                <p class="disclaimer-text" data-i18n="ea_disclaimer_desc">
+                    Trading forex, commodities, and stock indices involves substantial risk of loss and is not suitable for every investor. Past performance does not guarantee future results. Automated trading systems should be thoroughly tested on demo accounts and supervised with strict capital management rules.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p data-i18n="footer_rights">&copy; 2026 <strong>Ilham Sugiri</strong>. All rights reserved.</p>
+            <p data-i18n="ea_footer_sub">Super Expert Advisors is an independent quantitative algorithmic engineering project by Ilham Sugiri • Bantul, Indonesia</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #64748b;" data-i18n="footer_crafted">Crafted with passion in Bantul • Powered by Linux & GitHub Pages</p>
+        </div>
+    </footer>
+
+    <!-- MODULAR I18N MODULES & ENGINE -->
+    <script src="../assets/i18n/core.js"></script>
+    <script src="../assets/i18n/ea.js"></script>
+    <script src="../assets/i18n.js"></script>
+</body>
+</html>

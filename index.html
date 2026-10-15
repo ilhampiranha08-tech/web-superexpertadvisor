@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Expert Advisors | Quantitative MQL4 & MQL5 Algorithmic Trading Systems — Ilham Sugiri</title>
+    <meta name="description" content="Official catalogue and quantitative trading systems showcase of Super Expert Advisors by Ilham Sugiri. Precision MQL4 & MQL5 robots for Forex, Gold (XAUUSD), and US Stock Indices.">
+    <meta name="author" content="Ilham Sugiri">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Super Expert Advisors — Quantitative Trading Systems">
+    <meta property="og:description" content="Automated trading robots engineered with strict mathematical execution rules (.ex4 and .ex5) to eliminate emotional decision-making. Freedom • Choice • Profitable.">
+    <meta property="og:image" content="assets/banner_trading_ea.webp">
+    <meta property="og:url" content="https://superexpertadvisors.web.id/">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://superexpertadvisors.web.id/">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/i18n.css">
+
+    <style>
+        :root {
+            --bg-primary: #06080e;
+            --bg-secondary: #0d1424;
+            --bg-card: rgba(13, 20, 36, 0.85);
+            --border-color: rgba(245, 158, 11, 0.22);
+            --border-glow: rgba(245, 158, 11, 0.55);
+            
+            --accent-gold: #fbbf24;
+            --accent-amber: #f59e0b;
+            --accent-gold-dark: #d97706;
+            --accent-emerald: #10b981;
+            --accent-cyan: #06b6d4;
+            --accent-rose: #f43f5e;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.65;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.09) 0%, transparent 45%),
+                radial-gradient(circle at 85% 65%, rgba(16, 185, 129, 0.07) 0%, transparent 45%),
+                linear-gradient(to bottom, #06080e 0%, #0b101c 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* TOP NAVIGATION */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 8, 14, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+            padding: 0.9rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav-back:hover {
+            color: #fff;
+            background: rgba(245, 158, 11, 0.15);
+            border-color: var(--accent-amber);
+            transform: translateX(-2px);
+        }
+
+        .nav-back-short {
+            display: none;
+        }
+
+        .nav-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .nav-title .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-emerald);
+            box-shadow: 0 0 10px var(--accent-emerald);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-inquiry-nav {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #000000 !important;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-decoration: none;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-inquiry-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.55);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 3.5rem 0 2rem;
+            text-align: center;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.6rem;
+            background: linear-gradient(135deg, #ffffff 30%, #fbbf24 80%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-tagline {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        /* 2K WIDESCREEN BANNER */
+        .hero-banner-container {
+            margin: 0 auto 3rem;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(245, 158, 11, 0.15);
+            background: #0d1424;
+            max-width: 1040px;
+            position: relative;
+        }
+
+        .hero-banner-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 2064 / 1008;
+            object-fit: cover;
+        }
+
+        /* HERO STATS BAR */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.35rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-val {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* SECTION STYLES */
+        .section {
+            padding: 3.5rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            letter-spacing: 0.08em;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.6rem;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* CATEGORY WRAPPER */
+        .category-box {
+            background: linear-gradient(135deg, rgba(13, 20, 36, 0.95) 0%, rgba(17, 24, 43, 0.8) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.25rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b, #10b981, #06b6d4);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .category-title-group h3 {
+            font-size: 1.65rem;
+            color: #ffffff;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .category-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 650px;
+        }
+
+        .category-badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-super {
+            background: rgba(245, 158, 11, 0.18);
+            color: var(--accent-gold);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .badge-mini {
+            background: rgba(16, 185, 129, 0.18);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .badge-hft {
+            background: rgba(6, 182, 212, 0.18);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+        }
+
+        /* PRODUCTS GRID */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.35rem;
+        }
+
+        .product-card {
+            background: rgba(6, 9, 17, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.28s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(245, 158, 11, 0.45);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.12);
+        }
+
+        .product-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .product-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            background: rgba(6, 182, 212, 0.12);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(6, 182, 212, 0.25);
+        }
+
+        .product-price {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .price-super {
+            color: var(--accent-gold);
+        }
+
+        .price-free {
+            color: var(--accent-emerald);
+        }
+
+        .price-hft {
+            color: var(--accent-cyan);
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.6rem;
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .product-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.35rem;
+        }
+
+        .p-pill {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.55rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #cbd5e1;
+        }
+
+        .btn-card-action {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 0.65rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-super {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-gold);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-action-super:hover {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-action-free {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-action-free:hover {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-action-hft {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+        }
+
+        .btn-action-hft:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        /* ARCHITECTURE SECTION */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .arch-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.75rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .arch-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .arch-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .arch-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* INQUIRY & ORDER SECTION */
+        .order-section {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(13, 20, 36, 0.95) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 20px;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            margin: 4rem 0 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(245, 158, 11, 0.15);
+        }
+
+        .order-section h2 {
+            font-size: clamp(2rem, 4vw, 2.6rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+
+        .order-section p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .order-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .btn-order-primary {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #000000 !important;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 10px;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-order-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.55);
+        }
+
+        .btn-order-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.9rem 1.6rem;
+            border-radius: 10px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-order-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* DISCLAIMER BOX */
+        .disclaimer-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .disclaimer-title {
+            color: var(--accent-rose);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .disclaimer-text {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.5rem 0;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.88rem;
+        }
+
+        footer p {
+            margin-bottom: 0.4rem;
+        }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 900px) {
+            .nav-title {
+                display: none !important;
+            }
+            .hero-title {
+                font-size: 2.4rem;
+            }
+            .category-box {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-back-full {
+                display: none !important;
+            }
+            .nav-back-short {
+                display: inline !important;
+            }
+            .nav-content {
+                gap: 0.5rem;
+            }
+            .nav-actions {
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 580px) {
+            header {
+                padding: 0.65rem 0;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+            .btn-inquiry-nav {
+                display: none !important;
+            }
+            .nav-back {
+                padding: 0.4rem 0.7rem;
+                font-size: 0.84rem;
+            }
+            .lang-btn {
+                padding: 0.4rem 0.65rem;
+                font-size: 0.82rem;
+            }
+            .hero {
+                padding: 2.2rem 0 1.5rem;
+            }
+            .badge-pill {
+                font-size: 0.72rem;
+                padding: 0.35rem 0.75rem;
+                line-height: 1.4;
+            }
+            .hero-title {
+                font-size: 2.1rem;
+            }
+            .hero-tagline {
+                font-size: 1.1rem;
+            }
+            .hero-desc {
+                font-size: 0.95rem;
+            }
+            .category-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .order-section {
+                padding: 2.25rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION -->
+    <header>
+        <div class="container">
+            <div class="nav-content">
+                <a href="https://ilhampiranha08-tech.github.io/" class="nav-back">
+                    <span class="nav-back-full" data-i18n="nav_back_profile">◀ Back to Ilham Sugiri Profile</span>
+                    <span class="nav-back-short" data-i18n="nav_back_short">◀ Back</span>
+                </a>
+
+                <div class="nav-title">
+                    <span class="dot"></span>
+                    SUPER EXPERT ADVISORS
+                </div>
+
+                <div class="nav-actions">
+                    <a href="mailto:ilham.piranha08@gmail.com?subject=Super%20Expert%20Advisors%20Inquiry" class="btn-inquiry-nav">
+                        ✉️ <span data-i18n="ea_btn_email">Email Developer</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <span class="badge-pill" data-i18n="ea_page_tag">📈 QUANTITATIVE & ALGORITHMIC TRADING SYSTEMS • ZERO EMOTION</span>
+            <h1 class="hero-title" data-i18n="ea_hero_title">Super Expert Advisors</h1>
+            <div class="hero-tagline" data-i18n="ea_hero_tagline">FREEDOM • CHOICE • PROFITABLE</div>
+            <p class="hero-desc" data-i18n="ea_hero_desc">
+                Automated trading robots engineered with strict mathematical execution rules (.ex4 and .ex5) to eliminate emotional decision-making across global Forex, Gold (XAUUSD), and US Stock Indices. Developed by Ilham Sugiri with over a decade of quantitative MQL development experience.
+            </p>
+
+            <!-- 2K WIDESCREEN BANNER -->
+            <div class="hero-banner-container">
+                <img src="assets/banner_trading_ea.webp" alt="Super Expert Advisors — Freedom Choice Profitable" class="hero-banner-img">
+            </div>
+
+            <!-- KEY STATS -->
+            <div class="stats-bar" style="margin-bottom: 2.5rem;">
+                <div class="stat-card">
+                    <div class="stat-val">100%</div>
+                    <div class="stat-lbl">Algorithmic Math Execution</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">11 Bots</div>
+                    <div class="stat-lbl">Specialized Trading Systems</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">MT4 / MT5</div>
+                    <div class="stat-lbl">Native .ex4 and .ex5 Binaries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">Zero Emotion</div>
+                    <div class="stat-lbl">Rule-Based Trailing & Risk</div>
+                </div>
+            </div>
+
+            <!-- 2K WIDESCREEN BANNER: PAYMENT METHODS -->
+            <div class="hero-banner-container" style="margin-bottom: 3.5rem;">
+                <img src="assets/banner_payment_methods.webp" alt="Payment Methods — Get Your EA via PayPal, Skrill, Neteller & USDT" class="hero-banner-img">
+            </div>
+        </section>
+
+        <!-- PRODUCT CATALOGUE SECTION -->
+        <section class="section" id="catalogue">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="ea_order_sec_tag">01 // QUANTITATIVE PORTFOLIO</span>
+                <h2 class="section-title" data-i18n="ea_catalog_title">Quantitative Robots & Systems Catalogue</h2>
+                <p class="section-desc" data-i18n="ea_catalog_desc">
+                    Explore 11 quantitative trading systems across 3 specialized categories: Flagship Super Series ($29), Community Free Mini Series, and High-Frequency Averaging ($50).
+                </p>
+            </div>
+
+            <!-- CATEGORY 1: SUPER SERIES ($29) -->
+            <div class="category-box">
+                <div class="category-header">
+                    <div class="category-title-group">
+                        <h3 data-i18n="ea_sec_super_title">Super Series — Flagship Robots ($29)</h3>
+                        <p class="category-desc" data-i18n="ea_sec_super_desc">
+                            Institutional-grade automated trading robots featuring advanced money management, trailing stop algorithms, and multi-timeframe confirmation.
+                        </p>
+                    </div>
+                    <span class="category-badge badge-super" data-i18n="ea_sec_super_badge">⭐ PREMIUM MQL4 / MQL5</span>
+                </div>
+
+                <div class="products-grid">
+                    <!-- Super Breakout -->
+                    <div class="product-card" style="border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">KEY LEVELS / MOMENTUM</span>
+                                <span class="product-price price-super" data-i18n="ea_price_super">$29 USD</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="super-breakout/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_super_breakout_name">Super Breakout</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-gold);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_super_breakout_desc">
+                                Identifies volatility compression and exploits structural support/resistance breakouts with instant momentum entry and automated protection.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Breakout Trigger</span>
+                                <span class="p-pill">Trailing SL</span>
+                                <span class="p-pill">MT4 / MT5</span>
+                                <span class="p-pill" style="color: var(--accent-gold); border-color: rgba(245, 158, 11, 0.3);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="super-breakout/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 700; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);" data-i18n="ea_btn_detail_sb">
+                                    📖 Full Description & Backtest ↗
+                                </a>
+                                <a href="#inquiry" class="btn-card-action btn-action-super" style="padding: 0.45rem 1rem; font-size: 0.8rem; opacity: 0.85;" data-i18n="ea_btn_order_super">
+                                    🛒 Inquire Super Series ($29)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Super Engulfing -->
+                    <div class="product-card" style="border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">CANDLESTICK PATTERN</span>
+                                <span class="product-price price-super" data-i18n="ea_price_super">$29 USD</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="super-engulfing/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_super_engulfing_name">Super Engulfing</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-gold);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_super_engulfing_desc">
+                                Candlestick price-action detector filtering bullish and bearish engulfing patterns with higher-timeframe trend confirmation for pinpoint accuracy.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Price Action</span>
+                                <span class="p-pill">Multi-Timeframe</span>
+                                <span class="p-pill">Single & Grid</span>
+                                <span class="p-pill" style="color: var(--accent-gold); border-color: rgba(245, 158, 11, 0.3);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="super-engulfing/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 700; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);" data-i18n="ea_btn_detail_se">
+                                    📖 Full Description & Backtest ↗
+                                </a>
+                                <a href="#inquiry" class="btn-card-action btn-action-super" style="padding: 0.45rem 1rem; font-size: 0.8rem; opacity: 0.85;" data-i18n="ea_btn_order_super">
+                                    🛒 Inquire Super Series ($29)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Super Gold DeMarker -->
+                    <div class="product-card" style="border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">XAUUSD & MULTI-CURRENCY</span>
+                                <span class="product-price price-super" data-i18n="ea_price_super">$29 USD</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="super-gold-demarker/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_super_gold_demarker_name">Super Gold DeMarker</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-gold);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_super_gold_demarker_desc">
+                                Specialist Gold (XAUUSD) & currency algorithm combining Moving Average trend detection, DeMarker momentum exhaustion, and MACD / engulfing precision entry.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Gold (XAUUSD)</span>
+                                <span class="p-pill">DeMarker Filter</span>
+                                <span class="p-pill">MACD + Engulfing</span>
+                                <span class="p-pill" style="color: var(--accent-gold); border-color: rgba(245, 158, 11, 0.3);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="super-gold-demarker/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 700; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);" data-i18n="ea_btn_detail_sgd">
+                                    📖 Full Description & Backtest ↗
+                                </a>
+                                <a href="#inquiry" class="btn-card-action btn-action-super" style="padding: 0.45rem 1rem; font-size: 0.8rem; opacity: 0.85;" data-i18n="ea_btn_order_super">
+                                    🛒 Inquire Super Series ($29)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Super Marubozu -->
+                    <div class="product-card" style="border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">INSTITUTIONAL MOMENTUM</span>
+                                <span class="product-price price-super" data-i18n="ea_price_super">$29 USD</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="super-marubozu/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_super_marubozu_name">Super Marubozu</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-gold);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_super_marubozu_desc">
+                                Capitalizes on institutional momentum candlestick surges with partial take-profit acceleration, capturing explosive continuation trends on AUDCAD, AUDNZD, EURGBP, and Gold.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Marubozu Candles</span>
+                                <span class="p-pill">Partial Take Profit</span>
+                                <span class="p-pill">AUDCAD M5</span>
+                                <span class="p-pill" style="color: var(--accent-gold); border-color: rgba(245, 158, 11, 0.3);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="super-marubozu/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 700; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);" data-i18n="ea_btn_detail_sm">
+                                    📖 Full Description & Backtest ↗
+                                </a>
+                                <a href="#inquiry" class="btn-card-action btn-action-super" style="padding: 0.45rem 1rem; font-size: 0.8rem; opacity: 0.85;" data-i18n="ea_btn_order_super">
+                                    🛒 Inquire Super Series ($29)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Super Nasdaq -->
+                    <div class="product-card" style="border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">US TECH 100 INDEX</span>
+                                <span class="product-price price-super" data-i18n="ea_price_super">$29 USD</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="super-nasdaq/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_super_nasdaq_name">Super Nasdaq FTMO</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-gold);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_super_nasdaq_desc">
+                                Precision single-entry execution tailored for Nasdaq/US100 with proprietary Zeta Momentum, dynamic ATR(100) H1 Stop Loss & Take Profit, and 1:2 Risk-to-Reward ratio. FTMO & prop-firm ready.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">NAS100 / US100</span>
+                                <span class="p-pill">Zeta Momentum</span>
+                                <span class="p-pill">ATR(100) H1 (1:2 R:R)</span>
+                                <span class="p-pill" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">FTMO Ready</span>
+                                <span class="p-pill" style="color: var(--accent-gold); border-color: rgba(245, 158, 11, 0.3);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="super-nasdaq/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 700; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);" data-i18n="ea_btn_detail_sn">
+                                    📖 Full Description & Backtest ↗
+                                </a>
+                                <a href="#inquiry" class="btn-card-action btn-action-super" style="padding: 0.45rem 1rem; font-size: 0.8rem; opacity: 0.85;" data-i18n="ea_btn_order_super">
+                                    🛒 Inquire Super Series ($29)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Super DowJones -->
+                    <div class="product-card" style="border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">WALL STREET 30 (US30)</span>
+                                <span class="product-price price-super" data-i18n="ea_price_super">$29 USD</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="super-dowjones/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_super_dowjones_name">Super Dowjones FTMO</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-gold);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_super_dowjones_desc">
+                                Precision single-entry execution tailored for Dowjones/US30 with proprietary Zeta Momentum, dynamic ATR(100) H1 Stop Loss & Take Profit, and 1:2 Risk-to-Reward ratio. FTMO & prop-firm ready.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">US30 / DJ30</span>
+                                <span class="p-pill">Zeta Momentum</span>
+                                <span class="p-pill">ATR(100) H1 (1:2 R:R)</span>
+                                <span class="p-pill" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">FTMO Ready</span>
+                                <span class="p-pill" style="color: var(--accent-gold); border-color: rgba(245, 158, 11, 0.3);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="super-dowjones/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 700; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);" data-i18n="ea_btn_detail_sdj">
+                                    📖 Full Description & Backtest ↗
+                                </a>
+                                <a href="#inquiry" class="btn-card-action btn-action-super" style="padding: 0.45rem 1rem; font-size: 0.8rem; opacity: 0.85;" data-i18n="ea_btn_order_super">
+                                    🛒 Inquire Super Series ($29)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY 2: MINI SERIES (FREE) -->
+            <div class="category-box">
+                <div class="category-header">
+                    <div class="category-title-group">
+                        <h3 data-i18n="ea_sec_mini_title">Mini Series — Community Editions (FREE)</h3>
+                        <p class="category-desc" data-i18n="ea_sec_mini_desc">
+                            Free community editions built with core indicator logic for strategy validation, backtesting, and mechanical discipline learning on demo accounts.
+                        </p>
+                    </div>
+                    <span class="category-badge badge-mini" data-i18n="ea_sec_mini_badge">🟢 FREE FOR BACKTESTING</span>
+                </div>
+
+                <div class="products-grid">
+                    <!-- Mini Breakout -->
+                    <div class="product-card" style="border-color: rgba(16, 185, 129, 0.45); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">COMMUNITY / DEMO</span>
+                                <span class="product-price price-free" data-i18n="ea_price_free">FREE</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="mini-breakout/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_mini_breakout_name">Mini Breakout</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-emerald);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_mini_breakout_desc">
+                                Free community evaluation edition of Super Breakout for strategy evaluation and demo testing, detecting MA trend direction, RSI momentum, and session breakout boundaries.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Free Edition</span>
+                                <span class="p-pill">MA & RSI Trend</span>
+                                <span class="p-pill">EURGBP M5</span>
+                                <span class="p-pill" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="mini-breakout/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; font-weight: 700; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);" data-i18n="ea_btn_detail_mb">
+                                    📖 Free Edition & Backtest ↗
+                                </a>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="#inquiry" class="btn-card-action btn-action-free" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem;" data-i18n="ea_btn_order_free">
+                                        📥 Request Free
+                                    </a>
+                                    <a href="super-breakout/" target="_blank" class="btn-card-action" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4);">
+                                        ⭐ Full ($29) ↗
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Engulfing -->
+                    <div class="product-card" style="border-color: rgba(16, 185, 129, 0.45); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">COMMUNITY / DEMO</span>
+                                <span class="product-price price-free" data-i18n="ea_price_free">FREE</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="mini-engulfing/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_mini_engulfing_name">Mini Engulfing</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-emerald);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_mini_engulfing_desc">
+                                Free community evaluation edition of Super Engulfing with Moving Average trend filter, RSI + CCI dual momentum, and engulfing candle triggers with flexible single-entry or grid choices.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Free Edition</span>
+                                <span class="p-pill">RSI + CCI Momentum</span>
+                                <span class="p-pill">Single / Grid</span>
+                                <span class="p-pill" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="mini-engulfing/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; font-weight: 700; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);" data-i18n="ea_btn_detail_me">
+                                    📖 Free Edition & Backtest ↗
+                                </a>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="#inquiry" class="btn-card-action btn-action-free" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem;" data-i18n="ea_btn_order_free">
+                                        📥 Request Free
+                                    </a>
+                                    <a href="super-engulfing/" target="_blank" class="btn-card-action" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4);">
+                                        ⭐ Full ($29) ↗
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Gold DeMarker -->
+                    <div class="product-card" style="border-color: rgba(16, 185, 129, 0.45); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">FREE EDITION • MT4/MT5</span>
+                                <span class="product-price price-free" data-i18n="ea_price_free">FREE</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="mini-gold-demarker/" target="_blank" style="color: inherit; text-decoration: none;" data-i18n="prod_mini_gold_demarker_name">
+                                    Mini Gold DeMarker
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_mini_gold_demarker_desc">
+                                Free community Gold (XAUUSD) testing robot with core DeMarker oscillator logic for analyzing market cycles.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Free Edition</span>
+                                <span class="p-pill">DeMarker Oscillator</span>
+                                <span class="p-pill">XAUUSD M5</span>
+                                <span class="p-pill" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="mini-gold-demarker/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; font-weight: 700; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);" data-i18n="ea_btn_detail_mgd">
+                                    📖 Free Edition & Backtest ↗
+                                </a>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="#inquiry" class="btn-card-action btn-action-free" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem;" data-i18n="ea_btn_order_free">
+                                        📥 Request Free
+                                    </a>
+                                    <a href="super-gold-demarker/" target="_blank" class="btn-card-action" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4);">
+                                        ⭐ Full ($29) ↗
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Marubozu -->
+                    <div class="product-card" style="border-color: rgba(16, 185, 129, 0.45); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">FREE EDITION • MT4/MT5</span>
+                                <span class="product-price price-free" data-i18n="ea_price_free">FREE</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="mini-marubozu/" target="_blank" style="color: inherit; text-decoration: none;" data-i18n="prod_mini_marubozu_name">
+                                    Mini Marubozu
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_mini_marubozu_desc">
+                                Free community bot to study and practice mechanical execution on high-momentum Marubozu candlestick occurrences.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">Free Edition</span>
+                                <span class="p-pill">Marubozu Candlesticks</span>
+                                <span class="p-pill">M5 Multi-Pair</span>
+                                <span class="p-pill" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.35);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="mini-marubozu/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; font-weight: 700; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);" data-i18n="ea_btn_detail_mm">
+                                    📖 Free Edition & Backtest ↗
+                                </a>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="#inquiry" class="btn-card-action btn-action-free" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem;" data-i18n="ea_btn_order_free">
+                                        📥 Request Free
+                                    </a>
+                                    <a href="super-marubozu/" target="_blank" class="btn-card-action" style="flex: 1; padding: 0.45rem 0.5rem; font-size: 0.78rem; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid rgba(245, 158, 11, 0.4);">
+                                        ⭐ Full ($29) ↗
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY 3: HIGH-FREQUENCY TRADING SERIES ($50) -->
+            <div class="category-box">
+                <div class="category-header">
+                    <div class="category-title-group">
+                        <h3 data-i18n="ea_sec_hft_title">High-Frequency Trading Series ($50)</h3>
+                        <p class="category-desc" data-i18n="ea_sec_hft_desc">
+                            Engineered for high-liquidity precious metals (XAUUSD) utilizing algorithmic micro-lot scaling, fast order cycling, and dynamic equity protection.
+                        </p>
+                    </div>
+                    <span class="category-badge badge-hft" data-i18n="ea_sec_hft_badge">⚡ HIGH-FREQUENCY ENGINE</span>
+                </div>
+
+                <div class="products-grid" style="grid-template-columns: minmax(300px, 600px);">
+                    <!-- HFT Gold Averaging Up -->
+                    <div class="product-card" style="border-color: rgba(6, 182, 212, 0.45); box-shadow: 0 4px 20px rgba(6, 182, 212, 0.15);">
+                        <div>
+                            <div class="product-top">
+                                <span class="product-tag">XAUUSD HIGH-SPEED</span>
+                                <span class="product-price price-hft" data-i18n="ea_price_hft">$50 USD</span>
+                            </div>
+                            <h4 class="product-name">
+                                <a href="hft-gold-averaging-up/" target="_blank" style="color: inherit; text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                                    <span data-i18n="prod_hft_gold_name">HFT Gold Averaging Up</span>
+                                    <span style="font-size: 0.85rem; color: var(--accent-cyan);">↗</span>
+                                </a>
+                            </h4>
+                            <p class="product-desc" data-i18n="prod_hft_gold_desc">
+                                High-frequency multi-position averaging algorithm specifically engineered for XAUUSD with micro-pip cycle management and rapid equity recovery.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="product-features">
+                                <span class="p-pill">XAUUSD Averaging</span>
+                                <span class="p-pill">Micro-Pip Cycling</span>
+                                <span class="p-pill">Dual TF (M5/M1)</span>
+                                <span class="p-pill" style="color: var(--accent-cyan); border-color: rgba(6, 182, 212, 0.35);">Backtest Verified</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                <a href="hft-gold-averaging-up/" target="_blank" class="btn-card-action" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: #ffffff; font-weight: 700; box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);" data-i18n="ea_btn_detail_hft">
+                                    ⚡ Full Description & Backtest ↗
+                                </a>
+                                <a href="#inquiry" class="btn-card-action btn-action-hft" style="padding: 0.45rem 1rem; font-size: 0.8rem; opacity: 0.9;" data-i18n="ea_btn_order_hft">
+                                    ⚡ Inquire HFT Series ($50)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ARCHITECTURE & QUANTITATIVE PRINCIPLES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-tag">02 // MATHEMATICAL INTEGRITY</span>
+                <h2 class="section-title">Core Engineering Principles</h2>
+                <p class="section-desc">Every algorithm is built on quantitative rigor, strict risk thresholds, and clean native MQL architecture.</p>
+            </div>
+
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <div class="arch-icon">🛡️</div>
+                    <h4 class="arch-title">Fixed Risk & Trailing Stops</h4>
+                    <p class="arch-desc">Automated mathematical stops protect capital from black-swan volatility spikes and slippage.</p>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">⚡</div>
+                    <h4 class="arch-title">Native Binary Execution</h4>
+                    <p class="arch-desc">Compiled directly to high-speed .ex4 and .ex5 binaries for millisecond order execution on VPS.</p>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">📊</div>
+                    <h4 class="arch-title">Multi-Timeframe Structure</h4>
+                    <p class="arch-desc">Higher-timeframe trend filters prevent false breakouts and sideways whip-saws.</p>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-icon">🤖</div>
+                    <h4 class="arch-title">Zero Emotional Bias</h4>
+                    <p class="arch-desc">Eliminates trader hesitation, fear of missing out (FOMO), and premature profit taking.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORDER & INQUIRY SECTION -->
+        <section class="order-section" id="inquiry">
+            <span class="badge-pill" data-i18n="ea_order_sec_tag">02 // ORDER & CUSTOM INQUIRIES</span>
+            <h2 data-i18n="ea_order_title">Direct Developer Inquiry & Consultation</h2>
+            <p data-i18n="ea_order_desc">
+                Connect directly with Ilham Sugiri for license activation, backtest report requests, custom setfile recommendations, or private algorithmic commissions.
+            </p>
+
+            <div class="order-buttons">
+                <a href="mailto:ilham.piranha08@gmail.com?subject=Super%20Expert%20Advisors%20Inquiry" class="btn-order-primary">
+                    <span data-i18n="ea_btn_email">✉️ Email Developer (ilham.piranha08@gmail.com)</span>
+                </a>
+                <a href="../" class="btn-order-secondary">
+                    <span data-i18n="ea_btn_back_home">◀ Back to Ilham Sugiri Profile</span>
+                </a>
+            </div>
+
+            <!-- RISK WARNING -->
+            <div class="disclaimer-card">
+                <div class="disclaimer-title" data-i18n="ea_disclaimer_title">
+                    ⚠️ Risk Warning & Algorithmic Notice
+                </div>
+                <p class="disclaimer-text" data-i18n="ea_disclaimer_desc">
+                    Trading forex, commodities, and stock indices involves substantial risk of loss and is not suitable for every investor. Past performance does not guarantee future results. Automated trading systems should be thoroughly tested on demo accounts and supervised with strict capital management rules.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p data-i18n="footer_rights">&copy; 2026 <strong>Ilham Sugiri</strong>. All rights reserved.</p>
+            <p data-i18n="ea_footer_sub">Super Expert Advisors is an independent quantitative algorithmic engineering project by Ilham Sugiri • Bantul, Indonesia</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #64748b;" data-i18n="footer_crafted">Crafted with passion in Bantul • Powered by Linux & GitHub Pages</p>
+        </div>
+    </footer>
+
+    <!-- MODULAR I18N MODULES & ENGINE -->
+    <script src="assets/i18n/core.js"></script>
+    <script src="assets/i18n/ea.js"></script>
+    <script src="assets/i18n.js"></script>
+</body>
+</html>

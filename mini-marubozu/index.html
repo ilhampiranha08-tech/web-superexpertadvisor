@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Marubozu MT4 / MT5 | Free Community Edition — Ilham Sugiri</title>
+    <meta name="description" content="Official strategy architecture, operational limitations, and verified backtest report for Mini Marubozu MT4/MT5 by Ilham Sugiri. Free community edition of Super Marubozu combining Moving Average trend filter, RSI momentum gauge, and institutional Marubozu candlestick setups.">
+    <meta name="author" content="Ilham Sugiri">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Mini Marubozu MT4 / MT5 — Free Community Quantitative Robot">
+    <meta property="og:description" content="Free community version of Super Marubozu for Gold and all Forex currency pairs with Moving Average trend filter, RSI momentum, and Marubozu candlestick entry logic.">
+    <meta property="og:image" content="../assets/backtest_mini_marubozu.png">
+    <meta property="og:url" content="https://superexpertadvisors.web.id/mini-marubozu/">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/i18n.css">
+
+    <style>
+        :root {
+            --bg-primary: #06080e;
+            --bg-secondary: #0d1424;
+            --bg-card: rgba(13, 20, 36, 0.85);
+            --border-color: rgba(16, 185, 129, 0.22);
+            --border-glow: rgba(16, 185, 129, 0.55);
+            
+            --accent-gold: #fbbf24;
+            --accent-amber: #f59e0b;
+            --accent-emerald: #10b981;
+            --accent-emerald-dark: #059669;
+            --accent-cyan: #06b6d4;
+            --accent-rose: #f43f5e;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.65;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 85% 65%, rgba(245, 158, 11, 0.08) 0%, transparent 45%),
+                linear-gradient(to bottom, #06080e 0%, #0b101c 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* TOP NAVIGATION */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 8, 14, 0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+            padding: 0.9rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav-back:hover {
+            color: #fff;
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-emerald);
+            transform: translateX(-2px);
+        }
+
+        .nav-back-short {
+            display: none;
+        }
+
+        .nav-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-emerald);
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .nav-title .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-emerald);
+            box-shadow: 0 0 10px var(--accent-emerald);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 3.5rem 0 2rem;
+            text-align: center;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.6rem;
+            background: linear-gradient(135deg, #ffffff 30%, #34d399 80%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 820px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        /* FREE LIMITATION BANNER */
+        .limitation-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.08) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 16px;
+            padding: 1.6rem;
+            margin: 0 auto 3rem;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .limitation-box .icon {
+            font-size: 2.2rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .limitation-box h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 0.4rem;
+        }
+
+        .limitation-box p {
+            font-size: 0.93rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        /* QUICK STATS */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item .val {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-item .lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* SECTION STYLES */
+        .section {
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-header {
+            margin-bottom: 2.25rem;
+        }
+
+        .section-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-emerald);
+            letter-spacing: 0.08em;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        /* STRATEGY PILLARS GRID */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.35rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(16, 185, 129, 0.45);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .pillar-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .pillar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.6rem;
+        }
+
+        .pillar-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* SPECS TABLE */
+        .specs-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .specs-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .specs-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .specs-table td {
+            padding: 1.1rem 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .specs-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            width: 40%;
+        }
+
+        .specs-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .important-alert {
+            margin-top: 1.5rem;
+            padding: 1.1rem 1.4rem;
+            background: rgba(245, 158, 11, 0.12);
+            border-left: 4px solid var(--accent-amber);
+            border-radius: 8px;
+            font-weight: 600;
+            color: #fbbf24;
+            font-size: 0.95rem;
+        }
+
+        /* BACKTEST SECTION */
+        .backtest-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.75rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .backtest-img-wrapper {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #000;
+            margin-bottom: 1.5rem;
+        }
+
+        .backtest-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .backtest-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .bt-metric {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .bt-metric .m-val {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            margin-bottom: 0.2rem;
+        }
+
+        .bt-metric .lbl {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ORDER CTA */
+        .order-card {
+            background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.15) 0%, rgba(13, 20, 36, 0.95) 75%);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 4rem 0 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .order-card h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+
+        .order-price-badge {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-emerald);
+            margin: 0.75rem 0 1.25rem;
+        }
+
+        .order-card p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .order-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-order-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-order-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(16, 185, 129, 0.5);
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+        }
+
+        .btn-order-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.9rem 1.6rem;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .btn-order-secondary:hover {
+            background: rgba(245, 158, 11, 0.25);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        /* DISCLAIMER */
+        .disclaimer-card {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .disclaimer-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent-rose);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .disclaimer-text {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.5rem 0;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.88rem;
+        }
+
+        footer strong {
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 640px) {
+            .nav-back span:not(.nav-back-short) {
+                display: none;
+            }
+            .nav-back-short {
+                display: inline !important;
+            }
+            .specs-table td {
+                padding: 0.85rem 1rem;
+                font-size: 0.88rem;
+            }
+            .specs-label {
+                width: 45%;
+            }
+            .limitation-box {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY HEADER -->
+    <header>
+        <div class="container nav-content">
+            <a href="../" class="nav-back">
+                <span>◀ Back to Expert Advisors</span>
+                <span class="nav-back-short">◀ EA Hub</span>
+            </a>
+
+            <div class="nav-title">
+                <span class="dot"></span>
+                <span>MINI MARUBOZU FREE</span>
+            </div>
+
+            <div class="nav-actions">
+                <div id="i18n-selector-mount"></div>
+                <a href="#order" class="btn-order-primary" style="padding: 0.45rem 1rem; font-size: 0.85rem;">
+                    <span>FREE</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- HERO -->
+        <section class="hero">
+            <span class="badge-pill" data-i18n="mm_page_tag">🟢 FREE COMMUNITY DEMO EDITION • MT4 & MT5</span>
+            <h1 class="hero-title" data-i18n="mm_title">Mini Marubozu MT4 / MT5</h1>
+            <p class="hero-tagline" data-i18n="mm_tagline">Free Community Evaluation Edition of Super Marubozu</p>
+            <p class="hero-desc" data-i18n="mm_hero_desc">
+                Mini Marubozu MT4/MT5 is an accurate quantitative trading robot designed for gold and all currency pairs. Engineered with a Moving Average indicator to detect macro trends, RSI to measure directional momentum, and Marubozu candlestick setups for high-probability entry points. This is the free evaluation edition of Super Marubozu for strategy validation on demo accounts.
+            </p>
+
+            <!-- LIMITATION NOTICE -->
+            <div class="limitation-box">
+                <div class="icon">⚠️</div>
+                <div>
+                    <h4 data-i18n="mm_free_notice_title">Free Evaluation Edition — Operational Limitations</h4>
+                    <p data-i18n="mm_free_notice_desc">
+                        This community version is provided for strategy evaluation and demo practice. It includes core Marubozu breakout logic but features operational limitations compared to the commercial version. For unrestricted position sizing, automated dynamic trailing, and aggressive partial take-profit acceleration, explore: <a href="../super-marubozu/" style="color: #fbbf24; font-weight: 700; text-decoration: underline;">Super Marubozu MT4 / MT5 ($29 USD)</a>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- QUICK STATS -->
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <div class="val">AUDCAD / FOREX</div>
+                    <div class="lbl">Asset Universe</div>
+                </div>
+                <div class="stat-item">
+                    <div class="val">Marubozu Action</div>
+                    <div class="lbl">Institutional Momentum</div>
+                </div>
+                <div class="stat-item">
+                    <div class="val">M5 Chart</div>
+                    <div class="lbl">Execution Timeframe</div>
+                </div>
+                <div class="stat-item">
+                    <div class="val">&lt; 15.0%</div>
+                    <div class="lbl">Max Deposit Load</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STRATEGY ARCHITECTURE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-tag">01 // QUANTITATIVE FOUNDATION</span>
+                <h2 class="section-title" data-i18n="mm_sec_strat_title">Algorithmic Strategy Architecture</h2>
+            </div>
+
+            <div class="pillars-grid">
+                <!-- Pillar 1 -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">📈</div>
+                    <h3 class="pillar-title" data-i18n="mm_strat_ma_title">Moving Average Trend Filter</h3>
+                    <p class="pillar-desc" data-i18n="mm_strat_ma_desc">
+                        Determines macro structural market direction so orders are aligned with institutional trend flow, filtering counter-trend noise.
+                    </p>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">⚡</div>
+                    <h3 class="pillar-title" data-i18n="mm_strat_rsi_title">RSI Directional Momentum Gauge</h3>
+                    <p class="pillar-desc" data-i18n="mm_strat_rsi_desc">
+                        Monitors relative strength velocity to confirm that candlestick momentum is backed by sustained market impulse before initiating trades.
+                    </p>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">🕯️</div>
+                    <h3 class="pillar-title" data-i18n="mm_strat_marubozu_title">Marubozu Candlestick Entry Trigger</h3>
+                    <p class="pillar-desc" data-i18n="mm_strat_marubozu_desc">
+                        Detects solid full-bodied candles with little or no shadows, identifying decisive institutional accumulation or distribution and strong continuation trends.
+                    </p>
+                </div>
+
+                <!-- Pillar 4 -->
+                <div class="pillar-card">
+                    <div class="pillar-icon">⭐</div>
+                    <h3 class="pillar-title" data-i18n="mm_strat_upgrade_title">Upgrade to Super Marubozu ($29)</h3>
+                    <p class="pillar-desc" data-i18n="mm_strat_upgrade_desc">
+                        The commercial full release unlocks aggressive partial take-profit profit-taking, automated compounding, news filters, and VIP developer support.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPECIFICATIONS & RECOMMENDATIONS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-tag">02 // DEPLOYMENT PARAMETERS</span>
+                <h2 class="section-title" data-i18n="mm_sec_recom_title">Operational Specifications & Recommendations</h2>
+            </div>
+
+            <div class="specs-card">
+                <table class="specs-table">
+                    <tr>
+                        <td class="specs-label" data-i18n="mm_rec_pairs_lbl">Currency Pairs & Assets</td>
+                        <td class="specs-value" data-i18n="mm_rec_pairs_val">AUDCAD, AUDNZD, EURGBP (and all pair currencies & Gold)</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="mm_rec_tf_lbl">Timeframe</td>
+                        <td class="specs-value" data-i18n="mm_rec_tf_val">M5 (5 Minutes)</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="mm_rec_dep_fx_lbl">Min Deposit (Currencies)</td>
+                        <td class="specs-value" data-i18n="mm_rec_dep_fx_val">$500 ($1,000 / $2,000 recommended)</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="mm_rec_dep_gold_lbl">Min Deposit (Gold / XAUUSD)</td>
+                        <td class="specs-value" data-i18n="mm_rec_dep_gold_val">$1,000 ($2,000 recommended)</td>
+                    </tr>
+                    <tr>
+                        <td class="specs-label" data-i18n="mm_rec_acc_lbl">Account Type</td>
+                        <td class="specs-value" data-i18n="mm_rec_acc_val">Raw Spread or Zero Spread accounts</td>
+                    </tr>
+                </table>
+
+                <div class="important-alert" data-i18n="mm_rec_imp_note">
+                    ⚡ IMPORTANT: It is very important to use LOW SPREAD accounts for best results!
+                </div>
+            </div>
+        </section>
+
+        <!-- VERIFIED HISTORICAL BACKTEST -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-tag">03 // PROVEN EVIDENCE</span>
+                <h2 class="section-title" data-i18n="mm_sec_bt_title">Verified Historical Backtest Performance (AUDCAD / Multi-Pair M5)</h2>
+                <p class="section-desc" style="color: var(--text-muted);" data-i18n="mm_bt_desc">
+                    Verified historical backtest (March 2023) on M5 demonstrating smooth balance accumulation from 1,000 to > 1,350 USD with deposit load strictly maintained below 15%.
+                </p>
+            </div>
+
+            <div class="backtest-box">
+                <div class="backtest-img-wrapper">
+                    <img src="../assets/backtest_mini_marubozu.png" alt="Mini Marubozu M5 Backtest Chart" class="backtest-img">
+                </div>
+
+                <div class="backtest-metrics-grid">
+                    <div class="bt-metric">
+                        <div class="m-val">AUDCAD / FOREX</div>
+                        <div class="lbl">Asset Universe</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">M5</div>
+                        <div class="lbl">Timeframe Chart</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">March 2023</div>
+                        <div class="lbl">Backtest Window</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">&gt; 1,350 USD</div>
+                        <div class="lbl">Balance (+35%+)</div>
+                    </div>
+                    <div class="bt-metric">
+                        <div class="m-val">&lt; 15.0%</div>
+                        <div class="lbl">Deposit Load Max</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORDER & INQUIRY CARD -->
+        <section class="order-card" id="order">
+            <span class="badge-pill">📥 FREE COMMUNITY ACCESS</span>
+            <h2>Get Mini Marubozu (MT4 / MT5)</h2>
+            <div class="order-price-badge">FREE</div>
+            <p>
+                Request your free community evaluation copy (.ex4 and .ex5) directly from developer Ilham Sugiri for strategy testing on demo accounts.
+            </p>
+
+            <div class="order-buttons">
+                <a href="mailto:ilham.piranha08@gmail.com?subject=Request%20Free%20Mini%20Marubozu%20EA" class="btn-order-primary">
+                    <span data-i18n="mm_btn_order_email">📥 Request Free Mini Marubozu (.ex4/.ex5) via Email</span>
+                </a>
+                <a href="../super-marubozu/" class="btn-order-secondary">
+                    <span data-i18n="mm_btn_view_paid">⭐ Upgrade to Super Marubozu Full Version ($29 USD) ↗</span>
+                </a>
+            </div>
+
+            <div class="disclaimer-card">
+                <div class="disclaimer-title" data-i18n="ea_disclaimer_title">
+                    ⚠️ Risk Warning & Algorithmic Notice
+                </div>
+                <p class="disclaimer-text" data-i18n="ea_disclaimer_desc">
+                    Trading forex, commodities, and stock indices involves substantial risk of loss and is not suitable for every investor. Past performance does not guarantee future results. Automated trading systems should be thoroughly tested on demo accounts and supervised with strict capital management rules.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p data-i18n="footer_rights">&copy; 2026 <strong>Ilham Sugiri</strong>. All rights reserved.</p>
+            <p data-i18n="ea_footer_sub">Super Expert Advisors is an independent quantitative algorithmic engineering project by Ilham Sugiri • Bantul, Indonesia</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #64748b;" data-i18n="footer_crafted">Crafted with passion in Bantul • Powered by Linux & GitHub Pages</p>
+        </div>
+    </footer>
+
+    <!-- MODULAR I18N MODULES & ENGINE -->
+    <script src="../assets/i18n/core.js"></script>
+    <script src="../assets/i18n/ea.js"></script>
+    <script src="../assets/i18n.js"></script>
+</body>
+</html>
