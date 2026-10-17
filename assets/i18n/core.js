@@ -59,7 +59,7 @@
         "sec5_badge": "📬 Let's Connect & Build",
         "sec5_title": "Let's Collaborate",
         "sec5_desc": "Open for discussions on advanced Android engineering, custom MT4/MT5 Expert Advisor development, or open-source educational partnerships.",
-        "footer_rights": "&copy; 2024 <strong>Ilham Sugiri</strong>. All rights reserved.",
+        "footer_rights": "&copy; 2014 <strong>Ilham Sugiri</strong>. All rights reserved.",
         "footer_crafted": "Crafted with passion in Bantul • Powered by Linux & GitHub Pages",
         "btn_ea_detail": "📈 Open EA Showcase",
         "nav_back_short": "◀ Back"
@@ -119,7 +119,7 @@
         "sec5_badge": "📬 Mari Berkolaborasi",
         "sec5_title": "Mari Berkolaborasi",
         "sec5_desc": "Terbuka untuk diskusi proyek rekayasa aplikasi Android, konsultasi dan pembuatan custom Expert Advisor MT4/MT5, atau kerja sama edukasi teknologi open source.",
-        "footer_rights": "&copy; 2024 <strong>Ilham Sugiri</strong>. All rights reserved.",
+        "footer_rights": "&copy; 2014 <strong>Ilham Sugiri</strong>. All rights reserved.",
         "footer_crafted": "Dibuat dengan dedikasi di Bantul • Didukung oleh Linux & GitHub Pages",
         "btn_ea_detail": "📈 Buka Showcase EA",
         "nav_back_short": "◀ Kembali"
@@ -179,7 +179,7 @@
         "sec5_badge": "📬 Conectemos y Construyamos",
         "sec5_title": "Colaboremos Juntos",
         "sec5_desc": "Disponible para proyectos de ingeniería Android avanzada, desarrollo de Expert Advisors personalizados para MT4/MT5 o colaboraciones educativas en tecnologías de código abierto.",
-        "footer_rights": "&copy; 2024 <strong>Ilham Sugiri</strong>. Todos los derechos reservados.",
+        "footer_rights": "&copy; 2014 <strong>Ilham Sugiri</strong>. Todos los derechos reservados.",
         "footer_crafted": "Creado con pasión en Bantul • Impulsado por Linux y GitHub Pages",
         "btn_ea_detail": "📈 Abrir Vitrina de EA",
         "nav_back_short": "◀ Volver"
@@ -239,7 +239,7 @@
         "sec5_badge": "📬 Vamos Conectar e Construir",
         "sec5_title": "Vamos Colaborar",
         "sec5_desc": "Aberto para discussões sobre engenharia Android avançada, desenvolvimento de Expert Advisors personalizados para MT4/MT5 ou parcerias educacionais em tecnologia de código aberto.",
-        "footer_rights": "&copy; 2024 <strong>Ilham Sugiri</strong>. Todos os direitos reservados.",
+        "footer_rights": "&copy; 2014 <strong>Ilham Sugiri</strong>. Todos os direitos reservados.",
         "footer_crafted": "Desenvolvido com dedicação em Bantul • Hospedado em Linux e GitHub Pages",
         "btn_ea_detail": "📈 Abrir Vitrine de EA",
         "nav_back_short": "◀ Voltar"
@@ -299,7 +299,7 @@
         "sec5_badge": "📬 Давайте сотрудничать",
         "sec5_title": "Давайте сотрудничать",
         "sec5_desc": "Открыт для предложений по передовой разработке под Android, созданию индивидуальных советников MT4/MT5 или образовательным партнерствам в сфере open-source.",
-        "footer_rights": "&copy; 2024 <strong>Ильхам Сугири</strong>. Все права защищены.",
+        "footer_rights": "&copy; 2014 <strong>Ильхам Сугири</strong>. Все права защищены.",
         "footer_crafted": "Создано с душой в Бантуле • Работает на Linux и GitHub Pages",
         "btn_ea_detail": "📈 Открыть каталог советников (EA)",
         "nav_back_short": "◀ Назад"
@@ -359,7 +359,7 @@
         "sec5_badge": "📬 आइए जुड़ें और निर्माण करें",
         "sec5_title": "आइए सहयोग करें",
         "sec5_desc": "उन्नत एंड्रॉइड इंजीनियरिंग, कस्टम MT4/MT5 एक्सपर्ट एडवाइजर विकास, या ओपन-सोर्स शैक्षिक साझेदारी पर चर्चा के लिए खुला है।",
-        "footer_rights": "&copy; 2024 <strong>इल्हाम सुगिरी</strong>. सर्वाधिकार सुरक्षित।",
+        "footer_rights": "&copy; 2014 <strong>इल्हाम सुगिरी</strong>. सर्वाधिकार सुरक्षित।",
         "footer_crafted": "बांतुल में लगन से निर्मित • लिनक्स और गिटहब पेजेस द्वारा संचालित",
         "btn_ea_detail": "📈 EA शोकेस खोलें",
         "nav_back_short": "◀ वापस"

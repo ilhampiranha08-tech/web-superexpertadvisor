@@ -29,7 +29,7 @@ Official website repository and showcase catalogue of **Super Expert Advisors** 
 ## 🔒 Copyright & Proprietary Notice
 
 > ### ⚠️ STRICT PROPRIETARY NOTICE — ALL RIGHTS RESERVED
-> **Copyright &copy; 2024 Ilham Sugiri. All rights reserved.**  
+> **Copyright &copy; 2014 Ilham Sugiri. All rights reserved.**  
 > 
 > This repository is publicly hosted strictly to enable website hosting via GitHub Pages for `superexpertadvisors.web.id`.  
 > 
