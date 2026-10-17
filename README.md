@@ -41,3 +41,5 @@ Official website repository and showcase catalogue of **Super Expert Advisors** 
 - **Developer:** Ilham Sugiri
 - **Email:** [ilham.piranha08@gmail.com](mailto:ilham.piranha08@gmail.com)
 - **Official Profile:** [Ilham Sugiri on GitHub](https://github.com/ilhampiranha08-tech)
+- **Instagram:** [@ilhampiranha](https://www.instagram.com/ilhampiranha)
+- **Facebook:** [Ilham Piranha](https://www.facebook.com/share/1J68Hex4sg/)
